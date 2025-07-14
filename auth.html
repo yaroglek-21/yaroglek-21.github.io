@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Вхід | Інформатика Онлайн</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <main class="container">
+        <div class="auth-box">
+          <h2>Увійдіть або зареєструйтесь</h2>
+
+          <input type="email" id="auth-email" placeholder="Email" />
+          <input type="password" id="auth-pass" placeholder="Пароль" />
+
+          <div class="auth-buttons">
+            <button id="login-btn">Увійти</button>
+            <button id="register-btn">Реєстрація</button>
+          </div>
+
+          <p id="auth-message"></p>
+        </div>
+      </main>
+
+      <footer>
+        <p>© 2025 Інформатика Онлайн</p>
+      </footer>
+    </div>
+
+    <script>
+      const { createClient } = supabase;
+      const supabaseClient = createClient(
+        "https://hmhzmuwkspkhqdyqfuxa.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhtaHptdXdrc3BraHFkeXFmdXhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0MDQyMTUsImV4cCI6MjA2NDk4MDIxNX0.1EdztlkETvjFBvk3zYCy5DQS8pIz3BkgTNIE8EIuSOY"
+      );
+
+      document.getElementById("login-btn").addEventListener("click", signIn);
+      document.getElementById("register-btn").addEventListener("click", signUp);
+
+      async function signIn() {
+        const email = document.getElementById("auth-email").value.trim();
+        const password = document.getElementById("auth-pass").value.trim();
+        const msg = document.getElementById("auth-message");
+
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error) {
+          msg.textContent = "❌ " + error.message;
+          msg.style.color = "red";
+        } else {
+          msg.textContent = "✅ Успішний вхід!";
+          msg.style.color = "green";
+          localStorage.setItem("user", JSON.stringify(data.user));
+          setTimeout(() => (window.location.href = "index.html"), 1000);
+        }
+      }
+
+      async function signUp() {
+        const email = document.getElementById("auth-email").value.trim();
+        const password = document.getElementById("auth-pass").value.trim();
+        const msg = document.getElementById("auth-message");
+
+        const { data, error } = await supabaseClient.auth.signUp({
+          email,
+          password,
+        });
+
+        if (error) {
+          msg.textContent = "❌ " + error.message;
+          msg.style.color = "red";
+          return;
+        }
+
+        const { data: loginData, error: loginError } =
+          await supabaseClient.auth.signInWithPassword({
+            email,
+            password,
+          });
+
+        if (loginError) {
+          msg.textContent = "⚠️ Реєстрація пройшла, але не вдалося увійти";
+          msg.style.color = "orange";
+        } else {
+          msg.textContent = "✅ Реєстрація і вхід успішні!";
+          msg.style.color = "green";
+          localStorage.setItem("user", JSON.stringify(loginData.user));
+          setTimeout(() => (window.location.href = "index.html"), 1000);
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Профіль — Інформатика Онлайн</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <header>
+        <div class="container nav">
+          <h1 class="logo">IT_Know</h1>
+          <nav>
+            <a href="index.html">Головна</a>
+            <a href="lessons.html">Уроки</a>
+            <a href="profile.html">Профіль</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="container">
+        <section class="intro profile-wrapper">
+          <!-- Ліва частина -->
+          <div class="profile-column">
+            <h2>Профіль користувача</h2>
+
+            <img
+              id="user-avatar"
+              src=""
+              width="100"
+              style="border-radius: 50%; display: none"
+            />
+
+            <p>
+              <strong>Прізвище та Ім'я:</strong> <span id="user-name">—</span>
+            </p>
+            <p><strong>Клас:</strong> <span id="user-class">—</span></p>
+            <p><strong>Email:</strong> <span id="user-email">—</span></p>
+            <p>
+              <strong>Сумарний бал:</strong>
+              <span id="total-score">0</span> балів
+            </p>
+            <p>
+              <strong>Місце в рейтингу:</strong> <span id="user-rank">—</span>
+            </p>
+          </div>
+
+          <!-- Права частина -->
+          <div class="profile-column profile-right">
+            <button
+              class="accordion-btn"
+              onclick="toggleLesson('user-results')"
+              style="margin-bottom: 16px"
+            >
+              Результати уроків
+            </button>
+            <div id="user-results" class="lesson-content"></div>
+
+            <div class="profile-buttons">
+              <button onclick="toggleEdit()" class="btn-save">
+                Редагувати профіль
+              </button>
+              <a id="login-btn" href="auth.html" class="btn-save btn-logout"
+                >Увійти</a
+              >
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>© 2025 IT_Know</p>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+    <div id="edit-modal" class="modal">
+      <div class="modal-content">
+        <span class="modal-close" onclick="toggleEdit()">&times;</span>
+        <h3>Редагувати профіль</h3>
+        <input type="file" id="avatar-input" accept="image/png" />
+        <input type="text" id="edit-fullname" placeholder="Ім’я та прізвище" />
+        <input type="text" id="edit-class" placeholder="Клас (наприклад: 7)" />
+        <div class="modal-actions">
+          <button onclick="updateProfile()" class="btn-save">Зберегти</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
