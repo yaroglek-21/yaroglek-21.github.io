@@ -284,3 +284,33 @@ function toggleLesson(id) {
   const el = document.getElementById(id);
   el.style.display = el.style.display === "block" ? "none" : "block";
 }
+// Відкриття модального відео
+if (window.innerWidth < 768) {
+  document.querySelectorAll(".video-wrapper iframe").forEach((iframe) => {
+    iframe.style.pointerEvents = "none";
+    const wrapper = iframe.closest(".video-wrapper");
+    if (wrapper) {
+      wrapper.style.cursor = "pointer";
+      wrapper.addEventListener("click", () => {
+        const modal = document.getElementById("video-modal");
+        const frame = document.getElementById("video-frame");
+        frame.src = iframe.src + "?autoplay=1";
+        modal.style.display = "block";
+      });
+    }
+  });
+}
+
+function closeVideoModal() {
+  const modal = document.getElementById("video-modal");
+  const frame = document.getElementById("video-frame");
+  modal.style.display = "none";
+  frame.src = "";
+}
+
+window.addEventListener("click", function (event) {
+  const modal = document.getElementById("video-modal");
+  if (event.target === modal) {
+    closeVideoModal();
+  }
+});
