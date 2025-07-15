@@ -155,7 +155,9 @@ main {
   margin-bottom: 12px;
   border: 1px solid #ddd;
   border-radius: 8px;
+  box-sizing: border-box;
 }
+
 .auth-buttons {
   display: flex;
   flex-direction: column;
@@ -371,4 +373,46 @@ body.index .intro {
   margin: 8px auto;
   text-align: center;
   box-sizing: border-box;
+}
+.burger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .burger {
+    display: block;
+    margin-left: auto;
+  }
+
+  nav {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: #f3e5ff;
+    margin-top: 12px;
+  }
+
+  nav.open {
+    display: flex;
+  }
+
+  nav a {
+    padding: 12px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+@media (max-width: 500px) {
+  .video-wrapper {
+    padding-bottom: 100%; /* вище співвідношення – вище відео */
+  }
 }

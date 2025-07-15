@@ -10,6 +10,11 @@ const loginBtn = document.getElementById("login-btn");
 const userGreeting = document.getElementById("user-greeting");
 const userEmail = document.getElementById("user-email");
 
+function toggleMenu() {
+  const nav = document.getElementById("main-nav");
+  nav.classList.toggle("open");
+}
+
 if (currentUser && loginBtn) {
   loginBtn.textContent = "Вийти";
   loginBtn.href = "#";
