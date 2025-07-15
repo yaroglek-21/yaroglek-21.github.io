@@ -413,6 +413,6 @@ body.index .intro {
 }
 @media (max-width: 500px) {
   .video-wrapper {
-    padding-bottom: 100%; /* вище співвідношення – вище відео */
+    padding-bottom: 115%; /* вище співвідношення – вище відео */
   }
 }
