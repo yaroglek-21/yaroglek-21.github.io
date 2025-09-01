@@ -440,3 +440,66 @@ body.index .intro {
   height: 100%;
   border: none;
 }
+.lesson-section {
+  margin-bottom: 24px;
+}
+
+.lesson-banner {
+  position: relative;
+  border-radius: 12px;
+  padding: 60px 40px;
+  text-align: center;
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* затемнення поверх картинки */
+.lesson-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2));
+  border-radius: 12px;
+  transition: background 0.3s ease;
+}
+
+.lesson-banner h3 {
+  position: relative;
+  z-index: 1;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  margin: 0;
+}
+
+.lesson-banner:hover {
+  transform: scale(1.02);
+}
+.lesson-banner:hover::after {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.35));
+}
+
+/* 🔹 індивідуальні фони */
+.banner-1 {
+  background: url("back_cs.jpg") no-repeat center center;
+  background-size: cover;
+}
+.banner-2 {
+  background: url("back_progr.jpg") no-repeat center center;
+  background-size: cover;
+}
+.banner-3 {
+  background: url("back_game.jpg") no-repeat center center;
+  background-size: cover;
+}
+
+.lesson-list {
+  display: none;
+  margin-top: 16px;
+}
+.lesson-list.open {
+  display: block;
+}
