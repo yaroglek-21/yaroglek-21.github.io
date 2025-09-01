@@ -473,6 +473,10 @@ body.index .intro {
   z-index: 1;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
   margin: 0;
+  word-break: break-word; /* дозволяє переносити довгі слова */
+  overflow-wrap: break-word; /* запасний варіант для старих браузерів */
+  line-height: 1.2em;
+  text-align: center;
 }
 
 .lesson-banner:hover {
@@ -502,4 +506,45 @@ body.index .intro {
 }
 .lesson-list.open {
   display: block;
+}
+@media (max-width: 480px) {
+  .lesson-banner {
+    padding: 40px 20px;
+  }
+
+  .lesson-banner h3 {
+    font-size: 1.4rem;
+  }
+}
+.intro {
+  text-align: center; /* горизонтальне вирівнювання тексту */
+}
+
+.intro h2,
+.intro p {
+  margin: 0 auto; /* центр заголовка та абзацу */
+  display: block;
+}
+@media (max-width: 480px) {
+  .intro h2 {
+    font-size: 1.8rem; /* трохи менший заголовок */
+  }
+
+  .intro p {
+    font-size: 1rem; /* трохи менший текст */
+  }
+}
+.intro-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* горизонтальне вирівнювання */
+  justify-content: center; /* вертикальне вирівнювання */
+  gap: 12px;
+}
+.lesson-content h3 {
+  margin-top: 16px; /* відступ від відео зверху */
+  margin-bottom: 0; /* якщо потрібен мінімальний відступ знизу */
+  font-size: 1.1rem; /* підлаштувати розмір тексту */
+  line-height: 1.4em; /* щоб текст був зручний для читання */
+  color: #1f2937; /* темний колір, як основний текст */
 }
