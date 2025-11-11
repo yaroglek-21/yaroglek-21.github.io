@@ -83,7 +83,7 @@ if (ratingList) {
     });
 }
 
-// 📩 Надсилання тесту (оновлена версія)
+// 📩 Надсилання тесту (оновлена й узгоджена версія)
 async function submitTest(lessonId) {
   const btn = document.getElementById(`submit-${lessonId}`);
   const icon = document.getElementById(`status-${lessonId}`);
@@ -94,9 +94,9 @@ async function submitTest(lessonId) {
     return;
   }
 
-  // 🔒 Перевірка, чи цей тест уже відправлений
-  const doneTests = JSON.parse(localStorage.getItem("doneTests") || "{}");
-  if (doneTests[lessonId]) {
+  // 🔒 Єдина перевірка для блокування повторного відправлення
+  const testKey = `test_submitted_${lessonId}_${user.id}`;
+  if (localStorage.getItem(testKey) === "true") {
     alert("✅ Ви вже відправили цей тест. Повторна спроба неможлива.");
     if (btn) {
       btn.disabled = true;
@@ -139,8 +139,7 @@ async function submitTest(lessonId) {
     }
   } else {
     // 💾 Позначаємо тест як виконаний у localStorage
-    doneTests[lessonId] = true;
-    localStorage.setItem("doneTests", JSON.stringify(doneTests));
+    localStorage.setItem(testKey, "true");
 
     if (btn) {
       btn.classList.add("disabled");
@@ -158,22 +157,16 @@ async function initializeLessonStatus() {
   if (!currentUser || !window.location.pathname.includes("lessons.html"))
     return;
 
-  // Отримуємо результати користувача з бази
   const { data: results } = await supabaseClient
     .from("results")
     .select("lesson_id")
     .eq("user_id", currentUser.id);
 
-  // Зберігаємо у localStorage, щоб не можна було повторно проходити після оновлення сторінки
   if (results && Array.isArray(results)) {
     results.forEach(({ lesson_id }) => {
-      // Позначаємо в localStorage, що тест пройдено
-      localStorage.setItem(
-        `test_submitted_${lesson_id}_${currentUser.id}`,
-        "true"
-      );
+      const testKey = `test_submitted_${lesson_id}_${currentUser.id}`;
+      localStorage.setItem(testKey, "true");
 
-      // Блокуємо кнопку та міняємо вигляд
       const btn = document.getElementById(`submit-${lesson_id}`);
       const icon = document.getElementById(`status-${lesson_id}`);
       if (btn) {
@@ -181,19 +174,15 @@ async function initializeLessonStatus() {
         btn.textContent = "Пройдено";
         btn.disabled = true;
       }
-      if (icon) {
-        icon.innerHTML = "✔";
-      }
+      if (icon) icon.innerHTML = "✔";
     });
   }
 
-  // 🧩 Додатково — якщо користувач пройшов тест раніше, але дані не з бази (наприклад офлайн)
+  // 🧩 Якщо користувач пройшов тест раніше (offline або збережений стан)
   document.querySelectorAll("[id^='submit-']").forEach((btn) => {
     const lessonId = btn.id.replace("submit-", "");
-    const stored = localStorage.getItem(
-      `test_submitted_${lessonId}_${currentUser.id}`
-    );
-    if (stored === "true") {
+    const testKey = `test_submitted_${lessonId}_${currentUser.id}`;
+    if (localStorage.getItem(testKey) === "true") {
       btn.classList.add("disabled");
       btn.textContent = "Пройдено";
       btn.disabled = true;
