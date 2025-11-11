@@ -83,17 +83,10 @@ if (ratingList) {
     });
 }
 
-// 📩 Надсилання тесту
+// 📩 Надсилання тесту (оновлена версія)
 async function submitTest(lessonId) {
-  const questions = ["q1", "q2", "q3", "q4"];
-  let total = 0;
-
-  questions.forEach((q) => {
-    const selected = document.querySelector(`input[name="${q}"]:checked`);
-    if (selected) total += parseInt(selected.value);
-  });
-
-  const points = total * 10;
+  const btn = document.getElementById(`submit-${lessonId}`);
+  const icon = document.getElementById(`status-${lessonId}`);
   const user = JSON.parse(localStorage.getItem("user"));
 
   if (!user) {
@@ -101,6 +94,35 @@ async function submitTest(lessonId) {
     return;
   }
 
+  // 🔒 Перевірка, чи цей тест уже відправлений
+  const doneTests = JSON.parse(localStorage.getItem("doneTests") || "{}");
+  if (doneTests[lessonId]) {
+    alert("✅ Ви вже відправили цей тест. Повторна спроба неможлива.");
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = "Пройдено";
+      btn.classList.add("disabled");
+    }
+    if (icon) icon.innerHTML = "✔️";
+    return;
+  }
+
+  // 🛡️ Тимчасово блокуємо кнопку, щоб не клікали багато разів
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "Відправляється...";
+  }
+
+  // 🔢 Підрахунок балів
+  const questions = ["q1", "q2", "q3", "q4"];
+  let total = 0;
+  questions.forEach((q) => {
+    const selected = document.querySelector(`input[name="${q}"]:checked`);
+    if (selected) total += parseInt(selected.value);
+  });
+  const points = total * 10;
+
+  // 🗃️ Збереження результату в Supabase
   const { error } = await supabaseClient.from("results").upsert([
     {
       user_id: user.id,
@@ -111,17 +133,22 @@ async function submitTest(lessonId) {
 
   if (error) {
     alert("❌ Помилка збереження: " + error.message);
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = "Відправити ще раз";
+    }
   } else {
-    const btn = document.getElementById(`submit-${lessonId}`);
-    const icon = document.getElementById(`status-${lessonId}`);
+    // 💾 Позначаємо тест як виконаний у localStorage
+    doneTests[lessonId] = true;
+    localStorage.setItem("doneTests", JSON.stringify(doneTests));
+
     if (btn) {
       btn.classList.add("disabled");
       btn.textContent = "Пройдено";
       btn.disabled = true;
     }
-    if (icon) {
-      icon.innerHTML = "✔️";
-    }
+    if (icon) icon.innerHTML = "✔️";
+
     alert(`✅ Результат збережено: ${points} балів!`);
   }
 }
@@ -131,24 +158,51 @@ async function initializeLessonStatus() {
   if (!currentUser || !window.location.pathname.includes("lessons.html"))
     return;
 
+  // Отримуємо результати користувача з бази
   const { data: results } = await supabaseClient
     .from("results")
     .select("lesson_id")
     .eq("user_id", currentUser.id);
 
-  results.forEach(({ lesson_id }) => {
-    const btn = document.getElementById(`submit-${lesson_id}`);
-    const icon = document.getElementById(`status-${lesson_id}`);
-    if (btn) {
+  // Зберігаємо у localStorage, щоб не можна було повторно проходити після оновлення сторінки
+  if (results && Array.isArray(results)) {
+    results.forEach(({ lesson_id }) => {
+      // Позначаємо в localStorage, що тест пройдено
+      localStorage.setItem(
+        `test_submitted_${lesson_id}_${currentUser.id}`,
+        "true"
+      );
+
+      // Блокуємо кнопку та міняємо вигляд
+      const btn = document.getElementById(`submit-${lesson_id}`);
+      const icon = document.getElementById(`status-${lesson_id}`);
+      if (btn) {
+        btn.classList.add("disabled");
+        btn.textContent = "Пройдено";
+        btn.disabled = true;
+      }
+      if (icon) {
+        icon.innerHTML = "✔";
+      }
+    });
+  }
+
+  // 🧩 Додатково — якщо користувач пройшов тест раніше, але дані не з бази (наприклад офлайн)
+  document.querySelectorAll("[id^='submit-']").forEach((btn) => {
+    const lessonId = btn.id.replace("submit-", "");
+    const stored = localStorage.getItem(
+      `test_submitted_${lessonId}_${currentUser.id}`
+    );
+    if (stored === "true") {
       btn.classList.add("disabled");
       btn.textContent = "Пройдено";
       btn.disabled = true;
-    }
-    if (icon) {
-      icon.innerHTML = "✔";
+      const icon = document.getElementById(`status-${lessonId}`);
+      if (icon) icon.innerHTML = "✔";
     }
   });
 }
+
 initializeLessonStatus();
 
 // 📅 Профіль
