@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Головна</title>
+    <title>Теми</title>
     <link rel="stylesheet" href="./style.css" />
     <script type="module" src="./main.js"></script>
     <script type="module" src="./supabase.js"></script>
   </head>
-  <body class="index" data-page="index">
+  <body data-page="topics">
     <div class="page-wrapper">
       <header>
         <div class="container nav">
@@ -19,7 +19,9 @@
             <a href="./subjects.html">Уроки</a>
             <a href="./profile.html">Профіль</a>
             <a href="https://t.me/cros_21">Підтримка</a>
-            <a id="nav-admin" href="admin.html" style="display: none">Адмін</a>
+            <a id="nav-admin" href="./admin.html" style="display: none"
+              >Адмін</a
+            >
             <a id="auth-link" href="auth.html">Увійти</a>
           </nav>
         </div>
@@ -27,29 +29,13 @@
 
       <main class="container">
         <section class="intro">
-          <h2>Ласкаво просимо!</h2>
-          <p>
-            Інтерактивна навчальна платформа для підвищення якості освіти учнів
-            Балаховицької гімназії 🎓
-          </p>
+          <div class="intro-text">
+            <h2 id="subjectTitle">Теми</h2>
+            <p>Обирайте тему — і відкривайте уроки.</p>
+          </div>
         </section>
 
-        <section class="roadmap">
-          <h3>Наша школа</h3>
-          <img src="balah.webp" alt="School" class="roadmap-img" />
-        </section>
-
-        <section class="rating">
-          <h3>
-            Інтерактивна навчальна платформа розроблена з метою підвищення
-            якості освіти учнів Балаховицької гімназії.
-          </h3>
-          <h3>
-            Проєкт створено студентом Луцького національного технічного
-            університету
-          </h3>
-          <h3>Сергійчуком Ярославом Сергійовичем у межах дипломної роботи</h3>
-        </section>
+        <section id="topicsList"></section>
       </main>
 
       <footer>

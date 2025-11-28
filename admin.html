@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Адмін</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./main.js"></script>
+    <script type="module" src="./supabase.js"></script>
+  </head>
+  <body data-page="admin">
+    <div class="page-wrapper">
+      <header>
+        <div class="container nav">
+          <h1 class="logo"></h1>
+          <button class="burger" onclick="toggleMenu()">Меню</button>
+          <nav id="main-nav">
+            <a href="./index.html">Головна</a>
+            <a href="./subjects.html">Уроки</a>
+            <a href="./profile.html">Профіль</a>
+            <a href="https://t.me/cros_21">Підтримка</a>
+            <a id="nav-admin" href="./admin.html" style="display: none"
+              >Адмін</a
+            >
+            <a id="auth-link" href="auth.html">Увійти</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="container">
+        <section class="intro">
+          <h2>Адмін-панель</h2>
+          <p class="admin-subtitle">
+            Керування предметами, темами, уроками та тестами.
+          </p>
+        </section>
+
+        <section class="lesson-box">
+          <h3>Предмети</h3>
+          <form
+            id="subjectForm"
+            class="form"
+            style="display: flex; flex-direction: column; gap: 8px"
+          >
+            <input id="subjectTitle" placeholder="Назва предмета" />
+            <input id="subjectDesc" placeholder="Опис (необов'язково)" />
+            <input id="subjectBanner" placeholder="URL банера (обов'язково)" />
+
+            <button class="btn-save" type="submit">Додати</button>
+          </form>
+          <div id="subjectsAdmin" class="list" style="margin-top: 12px"></div>
+        </section>
+
+        <section class="lesson-box">
+          <h3>Теми</h3>
+          <form
+            id="topicForm"
+            class="form"
+            style="display: flex; flex-direction: column; gap: 8px"
+          >
+            <select id="topicSubjectSel"></select>
+            <input id="topicTitle" placeholder="Назва теми" />
+            <button class="btn-save" type="submit">Додати</button>
+          </form>
+          <div id="topicsAdmin" class="list" style="margin-top: 12px"></div>
+        </section>
+
+        <section class="lesson-box">
+          <h3>Уроки</h3>
+          <form
+            id="lessonForm"
+            class="form"
+            style="display: flex; flex-direction: column; gap: 8px"
+          >
+            <select id="lessonSubjectSel"></select>
+            <select id="lessonTopicSel" disabled></select>
+            <input id="lessonTitle" placeholder="Назва уроку" />
+            <input id="lessonUrl" placeholder="YouTube URL" />
+            <button class="btn-save" type="submit">Додати</button>
+          </form>
+          <div id="lessonsAdmin" class="list" style="margin-top: 12px"></div>
+        </section>
+
+        <section class="lesson-box">
+          <h3>Тести</h3>
+
+          <!-- Каскадні селекти -->
+          <div class="row" style="gap: 8px; justify-content: flex-start">
+            <select id="testSubjectSel" style="min-width: 200px"></select>
+            <select
+              id="testTopicSel"
+              style="min-width: 200px"
+              disabled
+            ></select>
+            <select
+              id="testLessonSel"
+              style="min-width: 200px"
+              disabled
+            ></select>
+          </div>
+
+          <!-- Конструктор -->
+          <div id="quizBuilder" class="quiz-builder">
+            <div class="qb-header">
+              <button
+                type="button"
+                id="qbAddQuestion"
+                class="btn-save"
+                style="max-width: 220px"
+              >
+                + Додати питання
+              </button>
+            </div>
+            <div id="qbList" class="qb-list"></div>
+            <div class="qb-actions">
+              <button
+                type="button"
+                id="qbSave"
+                class="btn-save"
+                style="max-width: 280px"
+              >
+                Зберегти тест
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>Автор: Сергійчук Ярослав, група ПОм-21.</p>
+        <p>
+          Виникли проблеми?
+          <a href="https://t.me/cros_21" target="_blank">Telegram</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

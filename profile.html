@@ -4,96 +4,140 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Профіль</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./main.js"></script>
+    <script type="module" src="./supabase.js"></script>
+
+    <style>
+      /* гарне вирівнювання форми */
+      .profile-edit-form {
+        max-width: 420px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .profile-edit-form label {
+        display: flex;
+        flex-direction: column;
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      .profile-edit-form input {
+        margin-top: 6px;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #bbb;
+        font-size: 16px;
+      }
+
+      .profile-save-btn {
+        margin-top: 10px;
+        padding: 12px;
+        font-size: 18px;
+      }
+
+      #editProfileMsg {
+        margin-top: 15px;
+        text-align: center;
+        display: none;
+        padding: 12px;
+        border-radius: 10px;
+        font-size: 18px;
+      }
+    </style>
   </head>
-  <body>
+
+  <body data-page="profile">
     <div class="page-wrapper">
       <header>
         <div class="container nav">
           <h1 class="logo"></h1>
-          <button class="burger" onclick="toggleMenu()">☰</button>
+          <button class="burger" onclick="toggleMenu()">Меню</button>
           <nav id="main-nav">
-            <a href="index.html">Головна</a>
-            <a href="lessons.html">Уроки</a>
-            <a href="tests.html">Тести</a>
+            <a href="./index.html">Головна</a>
+            <a href="./subjects.html">Уроки</a>
+            <a href="./profile.html">Профіль</a>
             <a href="https://t.me/cros_21">Підтримка</a>
-            <a href="profile.html">Профіль</a>
+            <a id="nav-admin" href="./admin.html" style="display: none"
+              >Адмін</a
+            >
+            <a id="auth-link" href="auth.html">Увійти</a>
           </nav>
         </div>
       </header>
 
       <main class="container">
-        <section class="intro profile-wrapper">
-          <!-- Ліва частина -->
-          <div class="profile-column">
-            <h2>Профіль користувача</h2>
+        <!-- Блок із даними -->
+        <section class="intro">
+          <h2>Профіль</h2>
+          <div id="profileCard"></div>
+        </section>
 
-            <img
-              id="user-avatar"
-              src=""
-              width="100"
-              style="border-radius: 50%; display: none"
-            />
+        <!-- Форма редагування -->
+        <section class="intro">
+          <button
+            id="openEditProfile"
+            class="btn-save"
+            style="margin-bottom: 20px"
+          >
+            Редагувати профіль
+          </button>
+        </section>
 
-            <p>
-              <strong>Прізвище та Ім'я:</strong> <span id="user-name">—</span>
-            </p>
-            <p><strong>Клас:</strong> <span id="user-class">—</span></p>
-            <p><strong>Email:</strong> <span id="user-email">—</span></p>
-            <p>
-              <strong>Сумарний бал:</strong>
-              <span id="total-score">0</span> балів
-            </p>
-            <p>
-              <strong>Місце в рейтингу:</strong> <span id="user-rank">—</span>
-            </p>
-          </div>
+        <section class="intro" id="editProfileSection" style="display: none">
+          <h2 style="text-align: center; margin-bottom: 20px">
+            Редагувати профіль
+          </h2>
 
-          <!-- Права частина -->
-          <div class="profile-column profile-right">
-            <button
-              class="accordion-btn"
-              onclick="toggleLesson('user-results')"
-              style="margin-bottom: 16px"
-            >
-              Результати уроків
+          <form id="editProfileForm" class="profile-edit-form">
+            <label>
+              Ім’я користувача:
+              <input type="text" id="editUsername" />
+            </label>
+
+            <label>
+              Клас (наприклад 5-А):
+              <input type="text" id="editClass" />
+            </label>
+
+            <button type="submit" class="btn-save profile-save-btn">
+              Зберегти зміни
             </button>
-            <div id="user-results" class="lesson-content"></div>
 
-            <div class="profile-buttons">
-              <button onclick="toggleEdit()" class="btn-save">
-                Редагувати профіль
-              </button>
-              <a id="login-btn" href="auth.html" class="btn-save btn-logout"
-                >Увійти</a
-              >
-            </div>
-          </div>
+            <div id="editProfileMsg" class="profile-msg"></div>
+
+            <button
+              id="closeEditProfile"
+              type="button"
+              class="btn-save"
+              style="margin-top: 10px; background: #888"
+            >
+              Сховати
+            </button>
+          </form>
+        </section>
+
+        <!-- Результати тестів -->
+        <section class="intro">
+          <h3>Мої результати</h3>
+          <ul id="myResults" class="list"></ul>
+        </section>
+        <section class="intro">
+          <h3>Мої бейджі</h3>
+          <div id="myBadges" class="badge-list"></div>
         </section>
       </main>
 
       <footer>
         <p>Автор: Сергійчук Ярослав, група ПОм-21.</p>
         <p>
-          Виникли проблеми? Звертайся до нашого
+          Виникли проблеми?
           <a href="https://t.me/cros_21" target="_blank">Telegram</a>
         </p>
       </footer>
-    </div>
-
-    <script src="script.js"></script>
-    <div id="edit-modal" class="modal">
-      <div class="modal-content">
-        <span class="modal-close" onclick="toggleEdit()">&times;</span>
-        <h3>Редагувати профіль</h3>
-        <input type="file" id="avatar-input" accept="image/png" />
-        <input type="text" id="edit-fullname" placeholder="Ім’я та прізвище" />
-        <input type="text" id="edit-class" placeholder="Клас (наприклад: 7)" />
-        <div class="modal-actions">
-          <button onclick="updateProfile()" class="btn-save">Зберегти</button>
-        </div>
-      </div>
     </div>
   </body>
 </html>

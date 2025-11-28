@@ -548,3 +548,265 @@ body.index .intro {
   line-height: 1.4em; /* щоб текст був зручний для читання */
   color: #1f2937; /* темний колір, як основний текст */
 }
+/* ДОПОВНЕННЯ ДЛЯ ВАРІАНТА Б */
+#subjectsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  #subjectsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  #subjectsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.banner-img {
+  background-size: cover;
+  background-position: center;
+  display: block;
+  text-decoration: none;
+}
+/* уже існує .lesson-banner — використовуємо її як основу */
+
+/* дрібні утиліти */
+.row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+}
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#profileCard {
+  background: #f3e5ff;
+  border-radius: 12px;
+  padding: 16px;
+}
+/* ===== Quiz Builder ===== */
+.quiz-builder {
+  margin-top: 16px;
+  background: #f9f3ff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.qb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.qb-card {
+  background: #fff;
+  border: 1px solid #e9d8fd;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.qb-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.qb-row input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e9d8fd;
+  border-radius: 8px;
+}
+.qb-opts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.qb-opts .opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f3e5ff;
+  border-radius: 8px;
+  padding: 8px;
+}
+.qb-opts .opt input[type="text"] {
+  flex: 1;
+  border: 1px solid #e9d8fd;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.qb-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+.qb-remove {
+  background: #ef4475;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.qb-remove:hover {
+  background: #c53030;
+}
+.test-result {
+  margin-top: 20px;
+  padding: 18px 22px;
+  border-radius: 12px;
+  background: #eaffea;
+  border: 2px solid #61c061;
+  color: #1e6f1e;
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.badge-item {
+  font-size: 32px;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* ==== Редагування профілю ==== */
+.profile-edit-form {
+  max-width: 420px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile-edit-form label {
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.profile-edit-form input {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.profile-save-btn {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* Повідомлення про успіх */
+.profile-msg {
+  display: none;
+  margin-top: 14px;
+  padding: 12px;
+  text-align: center;
+  border-radius: 8px;
+  background: #eaffd4;
+  color: #316100;
+  border: 1px solid #7bc043;
+  font-size: 17px;
+  animation: fadeIn 0.5s ease;
+}
+.admin-subtitle {
+  text-align: center;
+  font-size: 18px;
+  margin-top: -10px;
+  margin-bottom: 15px;
+}
+.rating-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.rating-table th {
+  background: #d8b9ff;
+  text-align: left;
+  padding: 10px;
+}
+
+.rating-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.rating-table tr:hover {
+  background: #f5eaff;
+}
+.badge-list {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.badge-img {
+  width: 60px;
+  height: 60px;
+}
+
+.badge-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#myBadges ul.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+#myBadges ul.list li.row-item {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+#myBadges > div {
+  display: block !important;
+  width: 100%;
+  margin-bottom: 20px;
+}
+#myBadges .lesson-content {
+  margin-bottom: 24px !important;
+}

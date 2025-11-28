@@ -3,96 +3,76 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Вхід | IT_Know</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>Вхід</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./supabase.js"></script>
   </head>
   <body>
     <div class="page-wrapper">
       <main class="container">
         <div class="auth-box">
-          <h2>Увійдіть або зареєструйтесь</h2>
-
-          <input type="email" id="auth-email" placeholder="Email" />
-          <input type="password" id="auth-pass" placeholder="Пароль" />
-
+          <h2>Увійти або Зареєструватись</h2>
+          <input type="email" id="email" placeholder="Email" />
+          <input type="password" id="password" placeholder="Пароль" />
           <div class="auth-buttons">
-            <button id="login-btn">Увійти</button>
-            <button id="register-btn">Реєстрація</button>
+            <button id="signIn">Увійти</button>
+            <button id="signUp">Реєстрація</button>
           </div>
-
-          <p id="auth-message"></p>
+          <p id="authMsg"></p>
         </div>
       </main>
-
-      <footer>
-        <p>© 2025 Інформатика Онлайн</p>
-      </footer>
+      <footer><p>© 2025 Інформатика Онлайн</p></footer>
     </div>
 
-    <script>
-      const { createClient } = supabase;
-      const supabaseClient = createClient(
-        "https://hmhzmuwkspkhqdyqfuxa.supabase.co",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhtaHptdXdrc3BraHFkeXFmdXhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0MDQyMTUsImV4cCI6MjA2NDk4MDIxNX0.1EdztlkETvjFBvk3zYCy5DQS8pIz3BkgTNIE8EIuSOY"
-      );
+    <script type="module">
+      import { supabase } from "./supabase.js";
 
-      document.getElementById("login-btn").addEventListener("click", signIn);
-      document.getElementById("register-btn").addEventListener("click", signUp);
+      const email = document.querySelector("#email");
+      const password = document.querySelector("#password");
+      const msg = document.querySelector("#authMsg");
 
-      async function signIn() {
-        const email = document.getElementById("auth-email").value.trim();
-        const password = document.getElementById("auth-pass").value.trim();
-        const msg = document.getElementById("auth-message");
-
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
-          email,
-          password,
-        });
+      // Функція отримання is_admin з таблиці profiles
+      async function loadAdminFlag(userId) {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("is_admin")
+          .eq("id", userId)
+          .single();
 
         if (error) {
-          msg.textContent = "❌ " + error.message;
-          msg.style.color = "red";
+          console.error("Помилка отримання профілю:", error);
+          localStorage.setItem("is_admin", "0");
         } else {
-          msg.textContent = "✅ Успішний вхід!";
-          msg.style.color = "green";
-          localStorage.setItem("user", JSON.stringify(data.user));
-          setTimeout(() => (window.location.href = "index.html"), 1000);
+          localStorage.setItem("is_admin", data?.is_admin ? "1" : "0");
         }
       }
 
-      async function signUp() {
-        const email = document.getElementById("auth-email").value.trim();
-        const password = document.getElementById("auth-pass").value.trim();
-        const msg = document.getElementById("auth-message");
-
-        const { data, error } = await supabaseClient.auth.signUp({
-          email,
-          password,
+      // Вхід
+      document.querySelector("#signIn").addEventListener("click", async () => {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email.value.trim(),
+          password: password.value.trim(),
         });
 
-        if (error) {
-          msg.textContent = "❌ " + error.message;
-          msg.style.color = "red";
-          return;
-        }
+        msg.textContent = error ? "❌ " + error.message : "✅ Успіх!";
 
-        const { data: loginData, error: loginError } =
-          await supabaseClient.auth.signInWithPassword({
-            email,
-            password,
-          });
-
-        if (loginError) {
-          msg.textContent = "⚠️ Реєстрація пройшла, але не вдалося увійти";
-          msg.style.color = "orange";
-        } else {
-          msg.textContent = "✅ Реєстрація і вхід успішні!";
-          msg.style.color = "green";
-          localStorage.setItem("user", JSON.stringify(loginData.user));
-          setTimeout(() => (window.location.href = "index.html"), 1000);
+        if (!error && data?.user) {
+          await loadAdminFlag(data.user.id); // ← ключовий момент!
+          location.href = "index.html";
         }
-      }
+      });
+
+      // Реєстрація
+      document.querySelector("#signUp").addEventListener("click", async () => {
+        const { error } = await supabase.auth.signUp({
+          email: email.value.trim(),
+          password: password.value.trim(),
+        });
+
+        msg.textContent = error
+          ? "❌ " + error.message
+          : "✅ Зареєстровано! Увійдіть.";
+      });
     </script>
   </body>
 </html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Урок</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./main.js"></script>
+    <script type="module" src="./supabase.js"></script>
+  </head>
+  <body data-page="lesson">
+    <div class="page-wrapper">
+      <header>
+        <div class="container nav">
+          <h1 class="logo"></h1>
+          <button class="burger" onclick="toggleMenu()">Меню</button>
+          <nav id="main-nav">
+            <a href="./index.html">Головна</a>
+            <a href="./subjects.html">Уроки</a>
+            <a href="./profile.html">Профіль</a>
+            <a href="https://t.me/cros_21">Підтримка</a>
+            <a id="nav-admin" href="./admin.html" style="display: none"
+              >Адмін</a
+            >
+            <a id="auth-link" href="auth.html">Увійти</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="container" id="lessonWrap">
+        <h2 id="lessonTitle">Урок</h2>
+        <div class="video-wrapper">
+          <iframe id="ytFrame" src="" allowfullscreen></iframe>
+        </div>
+        <div class="row" style="margin-top: 16px">
+          <a id="toTest" class="btn-save" href="#">Перейти до тесту</a>
+        </div>
+      </main>
+
+      <footer>
+        <p>Автор: Сергійчук Ярослав, група ПОм-21.</p>
+        <p>
+          Виникли проблеми?
+          <a href="https://t.me/cros_21" target="_blank">Telegram</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
