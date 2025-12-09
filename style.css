@@ -810,3 +810,71 @@ body.index .intro {
 #myBadges .lesson-content {
   margin-bottom: 24px !important;
 }
+/* Мобільне меню — коли приховано */
+/* Мобільне меню */
+@media (max-width: 650px) {
+  #main-nav {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    background: #ffffffee; /* напівпрозорий білий */
+    padding: 20px;
+    border-radius: 15px;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    width: 70%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.2s ease;
+  }
+
+  #main-nav.open {
+    display: flex;
+  }
+
+  #main-nav a {
+    font-size: 18px;
+    text-align: center;
+    padding: 10px 0;
+    color: #222;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: background 0.2s;
+  }
+
+  #main-nav a:hover {
+    background: #f0e6ff;
+  }
+
+  .burger {
+    display: block;
+    font-size: 22px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+  }
+}
+
+/* Десктопна версія */
+@media (min-width: 651px) {
+  #main-nav {
+    display: flex !important;
+    gap: 20px;
+  }
+  .burger {
+    display: none;
+  }
+}
+
+/* Анімація */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

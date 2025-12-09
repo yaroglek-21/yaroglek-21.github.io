@@ -55,6 +55,12 @@
       <header>
         <div class="container nav">
           <h1 class="logo"></h1>
+          <script>
+            function toggleMenu() {
+              var nav = document.getElementById("main-nav");
+              if (nav) nav.classList.toggle("open");
+            }
+          </script>
           <button class="burger" onclick="toggleMenu()">Меню</button>
           <nav id="main-nav">
             <a href="./index.html">Головна</a>
